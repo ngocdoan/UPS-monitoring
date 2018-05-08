@@ -1,101 +1,13 @@
-# UPS-monitoring
-Installing Network UPS Tools (NUT)
-
-Cài NUT trên ubuntu
-sudo apt-get install nut
-
-
-Select your driver
-Find the driver for your particular UPS by looking at the compatibility list on the NUT site (http://www.networkupstools.org/stable-hcl.html). If you can purchase a UPS that’s on the list, then that’s great. If you don’t find your UPS on the list, that doesn’t mean it won’t work, though. For instance, my UPS isn’t on the list, but a ton of other devices from the same company are, and they all seem to use the same driver (usbhid-ups). I gave it a shot, and it works just fine
-
-
-Configure the UPS
-sudo nano /etc/nut/ups.conf
-[RPHS] /*RPHS là tên UPS*/
-    driver = usbhid-ups
-    port = auto
-    desc = "CyberPower SX550G"
-    
-    
-Configure the daemon
-sudo nano /etc/nut/nut.conf
-MODE=standalone
-
-Configure the monitor
-sudo nano /etc/nut/upsd.users
-[admin]
-    password = mypasswd
-    actions = SET
-    instcmds = ALL
-
-[upsmon]
-    password = mypasswd
-    upsmon master
-    
-Next, edit the configuration file for the upsmon client program.
-sudo nano /etc/nut/upsmon.conf
-The keyword “MONITOR”. It does have to be all uppercase, by the way.
-The “system” name in the format UpsName@HostName. I called my UPS “RPHS”, and since we’re running in standalone mode, we can just use “localhost” for the host name, so the resulting “system name” is “RPHS@localhost”.
-The “power value”. This only applies to big servers with multiple redundant power supplies. Just set it to “1”.
-The user name that you established in the upsd.users file (upsmon) .
-The password that you established in the upsd.users file (mypasswd).
-A value indicating whether this computer is the master or slave. You can read about the distinction in the upsmon.conf file itself, but for a standalone system like this, use “master”.
-MONITOR RPHS@localhost 1 upsmon pass master
-NOTIFYCMD /etc/nut/notifycmd
-NOTIFYFLAG ONLINE       SYSLOG+WALL+EXEC
-NOTIFYFLAG ONBATT       SYSLOG+WALL+EXEC
-
-sudo nano /etc/nut/notifycmd
-#!/bin/bash
-PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin
-if [ "$NOTIFYTYPE" = "ONBATT" ]
-then
-ssmtp -vvv "youremail@gmail.com" -F "UPS Monitoring" < /home/user/UPSONBATT.txt
-fi
-if [ "$NOTIFYTYPE" = "ONLINE" ]
-then
-ssmtp -vvv "youremail@gmail.com" -F "UPS Monitoring" < /home/user/UPSONLINE.txt
-fi
-make it executable
-sudo chown nut:nut /etc/nut/notifycmd
-sudo chmod 700 /etc/nut/notifycmd
-
-Next up, a little permissions wrangling. You need to set up the various configuration files to be readable by the NUT components that use them, but not by other users. This prevents anyone from reading the password, and sending unauthorized commands to the server to shut everything down. It may be overkill for a simple home network, but it’s also really simple to do.
-sudo chown nut:nut /etc/nut/*
-sudo chmod 640 /etc/nut/upsd.users /etc/nut/upsmon.conf
-
-ssmtp email
-sudo apt-get install ssmtp
-Next, we’ll edit ssmtp’s configuration:
-sudo nano /etc/ssmtp/ssmtp.conf
-root=Tên tài khoản@gmail.com
-mailhub=smtp.gmail.com:587
-#rewriteDomain=domain local
-#hostname=FQDN
-UseTLS=Yes
-UseSTARTTLS=Yes
-AuthUser=Gmail_username
-AuthPass=Gmail_password
-FromLineOverride=YES
-
-sudo nano /home/user/UPSONBATT.txt
-From: UPS Monitoring youremail@gmail.com
-Subject: Location Power Losses
-
-UPS is running on battery, please check the power!
-
-sudo nano /home/user/UPSONBATT.txt
-From: UPS Monitoring youremail@gmail.com
-Subject: Location Power Recover
-
-UPS is online now!
-
-Verify hardware configuration
-To check whether the driver and daemon are configured correctly, you can simply start up the service.
-/* Phải reboot máy trước mới check được bằng lệnh này
-sudo upsdrvctl start
-sudo service nut-server status
-upsc rphs
-sudo upscmd -l rphs
-sudo service nut-server restart
-sudo service nut-client restart
+<p># UPS-monitoring<br />1. Installing Network UPS Tools (NUT)<br />sudo apt-get install nut</p>
+<p><br />2. Select your driver<br />Find the driver for your particular UPS by looking at the compatibility list on the NUT site (http://www.networkupstools.org/stable-hcl.html). If you can purchase a UPS that&rsquo;s on the list, then that&rsquo;s great. If you don&rsquo;t find your UPS on the list, that doesn&rsquo;t mean it won&rsquo;t work, though. For instance, my UPS isn&rsquo;t on the list, but a ton of other devices from the same company are, and they all seem to use the same driver (usbhid-ups). I gave it a shot, and it works just fine</p>
+<p><br />3. Configure the UPS<br />sudo nano /etc/nut/ups.conf<br />[RPHS] /*RPHS l&agrave; t&ecirc;n UPS*/<br />driver = usbhid-ups<br />port = auto<br />desc = "CyberPower SX550G"<br /> <br /> <br />4. Configure the daemon<br />sudo nano /etc/nut/nut.conf<br />MODE=standalone</p>
+<p>5. Configure the monitor<br />sudo nano /etc/nut/upsd.users<br />[admin]<br />password = mypasswd<br />actions = SET<br />instcmds = ALL</p>
+<p>[upsmon]<br />password = mypasswd<br />upsmon master<br /> <br />6. Next, edit the configuration file for the upsmon client program.<br />sudo nano /etc/nut/upsmon.conf<br />The keyword &ldquo;MONITOR&rdquo;. It does have to be all uppercase, by the way.<br />The &ldquo;system&rdquo; name in the format UpsName@HostName. I called my UPS &ldquo;RPHS&rdquo;, and since we&rsquo;re running in standalone mode, we can just use &ldquo;localhost&rdquo; for the host name, so the resulting &ldquo;system name&rdquo; is &ldquo;RPHS@localhost&rdquo;.<br />The &ldquo;power value&rdquo;. This only applies to big servers with multiple redundant power supplies. Just set it to &ldquo;1&rdquo;.<br />The user name that you established in the upsd.users file (upsmon) .<br />The password that you established in the upsd.users file (mypasswd).<br />A value indicating whether this computer is the master or slave. You can read about the distinction in the upsmon.conf file itself, but for a standalone system like this, use &ldquo;master&rdquo;.<br />MONITOR RPHS@localhost 1 upsmon pass master<br />NOTIFYCMD /etc/nut/notifycmd<br />NOTIFYFLAG ONLINE SYSLOG+WALL+EXEC<br />NOTIFYFLAG ONBATT SYSLOG+WALL+EXEC</p>
+<p>sudo nano /etc/nut/notifycmd<br />#!/bin/bash<br />PATH=/sbin:/usr/sbin:/bin:/usr/bin:/usr/local/sbin:/usr/local/bin<br />if [ "$NOTIFYTYPE" = "ONBATT" ]<br />then<br />ssmtp -vvv "youremail@gmail.com" -F "UPS Monitoring" &lt; /home/user/UPSONBATT.txt<br />fi<br />if [ "$NOTIFYTYPE" = "ONLINE" ]<br />then<br />ssmtp -vvv "youremail@gmail.com" -F "UPS Monitoring" &lt; /home/user/UPSONLINE.txt<br />fi<br />make it executable<br />sudo chown nut:nut /etc/nut/notifycmd<br />sudo chmod 700 /etc/nut/notifycmd</p>
+<p>Next up, a little permissions wrangling. You need to set up the various configuration files to be readable by the NUT components that use them, but not by other users. This prevents anyone from reading the password, and sending unauthorized commands to the server to shut everything down. It may be overkill for a simple home network, but it&rsquo;s also really simple to do.<br />sudo chown nut:nut /etc/nut/*<br />sudo chmod 640 /etc/nut/upsd.users /etc/nut/upsmon.conf</p>
+<p>7. ssmtp email<br />sudo apt-get install ssmtp<br />Next, we&rsquo;ll edit ssmtp&rsquo;s configuration:<br />sudo nano /etc/ssmtp/ssmtp.conf<br />root=T&ecirc;n t&agrave;i khoản@gmail.com<br />mailhub=smtp.gmail.com:587<br />#rewriteDomain=domain local<br />#hostname=FQDN<br />UseTLS=Yes<br />UseSTARTTLS=Yes<br />AuthUser=Gmail_username<br />AuthPass=Gmail_password<br />FromLineOverride=YES</p>
+<p>sudo nano /home/user/UPSONBATT.txt<br />From: UPS Monitoring youremail@gmail.com<br />Subject: Location Power Losses</p>
+<p>UPS is running on battery, please check the power!</p>
+<p>sudo nano /home/user/UPSONBATT.txt<br />From: UPS Monitoring youremail@gmail.com<br />Subject: Location Power Recover</p>
+<p>UPS is online now!</p>
+<p>8. Verify hardware configuration<br />To check whether the driver and daemon are configured correctly, you can simply start up the service.<br />/* Phải reboot m&aacute;y trước mới check được bằng lệnh n&agrave;y*/<br />sudo upsdrvctl start<br />sudo service nut-server status<br />upsc rphs<br />sudo upscmd -l rphs<br />sudo service nut-server restart<br />sudo service nut-client restart</p>
