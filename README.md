@@ -13,7 +13,7 @@
 <p><strong>sudo nano /home/user/UPSONLINE.txt</strong><br />From: UPS Monitoring youremail@gmail.com<br />Subject: Location Power Recover</p>
 <p>UPS is online now!</p>
 <p><strong>8. Verify hardware configuration</strong><br />To check whether the driver and daemon are configured correctly, you can simply start up the service.<br />/* Phải reboot m&aacute;y trước mới check được bằng lệnh n&agrave;y*/<br />sudo upsdrvctl start<br />sudo service nut-server status<br />upsc rphs&nbsp;/* rphs l&agrave; t&ecirc;n UPS tạo l&uacute;c đầu*/<br />sudo upscmd -l rphs<br />sudo service nut-server restart<br />sudo service nut-client restart</p>
-<Strong>9. Hướng dẫn test gửi mail</Strong>
+<Strong>9. Hướng dẫn test gửi mail</Strong><br />
 Trong file&nbsp;sudo nano /etc/nut/upsmon.conf<br />
 Uncomment&nbsp;NOTIFYFLAG COMMOK SYSLOG+WALL+EXEC<br />
 Trong file&nbsp;sudo nano /etc/nut/notifycmd<br />
