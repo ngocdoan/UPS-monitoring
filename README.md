@@ -15,7 +15,7 @@
 <p><strong>8. Verify hardware configuration</strong><br />To check whether the driver and daemon are configured correctly, you can simply start up the service.<br />/* Phải reboot m&aacute;y trước mới check được bằng lệnh n&agrave;y*/<br />sudo upsdrvctl start<br />sudo service nut-server status<br />upsc rphs&nbsp;/* rphs l&agrave; t&ecirc;n UPS tạo l&uacute;c đầu*/<br />sudo upscmd -l rphs<br />sudo service nut-server restart<br />sudo service nut-client restart</p>
 <p><Strong>9. Hướng dẫn test gửi mail</Strong></p>
 Trong file&nbsp;sudo nano /etc/nut/upsmon.conf<br />
-Uncomment&nbsp;NOTIFYFLAG COMMOK SYSLOG+WALL+EXEC<br /><br />
+Uncomment&nbsp;NOTIFYFLAG COMMOK SYSLOG+WALL+EXEC<br />
 Trong file&nbsp;sudo nano /etc/nut/notifycmd<br />
 Sửa&nbsp;if [ "$NOTIFYTYPE" = "ONBATT" ] th&agrave;nh&nbsp;if [ "$NOTIFYTYPE" = "COMMOK" ]<br />
 Chạy lệnh restart v&agrave; xem c&oacute; email gửi đến kh&ocirc;ng?, nếu c&oacute; th&igrave; sửa lại như ban đầu v&agrave; add th&ecirc;m danh s&aacute;ch email bổ sung(ch&uacute; &yacute; l&uacute;c test để 1 email để tr&aacute;nh spam người kh&aacute;c). Nếu kh&ocirc;ng th&igrave; xem lại việc ph&acirc;n quyền file notifycmd<br />
