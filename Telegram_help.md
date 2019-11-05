@@ -1,4 +1,13 @@
-Create new telegram bot
+<B>Create new telegram bot</B>
+
+Creating a new bot<br>
+Use the /newbot command to create a new bot. The BotFather will ask you for a name and username, then generate an authorization token for your new bot.
+
+The name of your bot is displayed in contact details and elsewhere.
+
+The Username is a short name, to be used in mentions and telegram.me links. Usernames are 5-32 characters long and are case insensitive, but may only include Latin characters, numbers, and underscores. Your bot's username must end in ‘bot’, e.g. ‘tetris_bot’ or ‘TetrisBot’.
+
+The token is a string along the lines of 110201543:AAHdqTcvCH1vGWJxfSeofSAs0K5PALDsaw that is required to authorize the bot and send requests to the Bot API. Keep your token secure and store it safely, it can be used by anyone to control your bot.
 
 https://core.telegram.org/bots#creating-a-new-bot
 
