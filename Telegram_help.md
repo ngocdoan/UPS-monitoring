@@ -1,4 +1,5 @@
 <B>Telegram Bot - how to get a group chat id?</B><br>
+
 Assume the bot name is my_bot.
 
 1- Add the bot to the group.
@@ -16,7 +17,7 @@ replace XXX:YYYY with your bot token
 
 5- Testing: You can test sending a message to the group with a curl:
 
-curl -X POST "https://api.telegram.org/botXXX:YYYY/sendMessage" -d "chat_id=-zzzzzzzzzz&text=my sample text"
+curl -X POST "https://api.telegram.org/botXXX:YYYY/sendMessage" -d "chat_id=-zzzzzzzzzz&text=my sample text"<br>
 If you miss step 2, there would be no update for the group you are looking for. Also if there are multiple groups, you can look for the group name in the response ("title":"group_name").
 
 Hope this helps.
