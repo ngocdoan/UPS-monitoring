@@ -1,3 +1,8 @@
+Create new telegram bot
+
+https://core.telegram.org/bots#creating-a-new-bot
+
+
 <B>Telegram Bot - how to get a group chat id?</B><br>
 
 Assume the bot name is my_bot.
