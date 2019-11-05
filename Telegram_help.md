@@ -1,4 +1,4 @@
-Telegram Bot - how to get a group chat id?<br>
+<B>Telegram Bot - how to get a group chat id?</B><br>
 Assume the bot name is my_bot.
 
 1- Add the bot to the group.
