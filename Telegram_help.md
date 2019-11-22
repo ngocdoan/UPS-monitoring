@@ -35,31 +35,3 @@ curl -X POST "https://api.telegram.org/botXXX:YYYY/sendMessage" -d "chat_id=-zzz
 If you miss step 2, there would be no update for the group you are looking for. Also if there are multiple groups, you can look for the group name in the response ("title":"group_name").
 
 Hope this helps.
-```mermaid
-graph LR
-A[Square Rect] -- Link text --> B((Circle))
-A --> C(Round Rect)
-B --> D{Rhombus}
-C --> D
-```
-```mermaid
-graph LR
-R1((R1))
-R2((R2))
-SW1(SW1)
-SW2(SW2)
-ASW(Access SW)
-User((User))
-Internet{Internet}
-Internet-->R1
-Internet-->R2
-R1-->SW1
-R1-->SW2
-R2-->SW1
-R2-->SW2
-SW1-->ASW
-SW2-->ASW
-ASW-->User
-```
-- [x] This is a complete item
-- [ ] This is an incomplete item
